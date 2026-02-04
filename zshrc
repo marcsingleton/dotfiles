@@ -20,7 +20,9 @@ if [ ${functions[command_not_found_handler]} ]; then
 fi
 
 # path
-export PATH=$PATH:/opt/local/bin/  # Add MacPorts directory
+PATH+=:~/.local/bin/  # Add local user binaries
+PATH+=:/opt/local/bin/  # Add MacPorts directory
+export PATH
 
 # aliases
 alias ls='ls -G'  # Replace -G with --color on Linux systems
