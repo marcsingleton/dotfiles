@@ -23,7 +23,7 @@ fi
 export PATH=$PATH:/opt/local/bin/  # Add MacPorts directory
 
 # aliases
-alias ls='ls -G'
+alias ls='ls -G'  # Replace -G with --color on Linux systems
 alias ll='ls -lG'
 alias lA='ls -AG'
 alias llA='ls -lAG'
