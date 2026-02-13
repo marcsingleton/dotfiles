@@ -1,20 +1,22 @@
 #!/bin/bash
 
-# Parses FASTA files into delimited records
+# Parses FASTA files into delimited records of header and sequence output
 
 set -e
 
-# Default output delimiter
-SEP="\t"
+print_usage() {
+printf "usage: ${0##*/} [-d <delimiter>] [<file>]\n"
+}
 
-# Parse options
+SEP=$'\t' # Default output delimiter
+
 while getopts "d:h" opt; do
   case $opt in
     d)
       SEP="$OPTARG"
       ;;
     h|*)
-      echo "usage: ${0##*/} [-d <delimiter>] [<file>]"
+      print_usage
       exit 1
       ;;
   esac
