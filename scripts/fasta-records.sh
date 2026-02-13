@@ -31,4 +31,4 @@ else
 fi
 
 # Execute the awk command with the specified output delimiter
-awk -v SEP="$SEP" 'BEGIN {RS=">"; ORS="\n"; OFS=""} {$1=$1 SEP; print}' "$input_file" | tail -n +2
+awk -v SEP="$SEP" 'BEGIN {RS=">"; FS="\n"; ORS="\n"; OFS=""} {$1=$1 SEP; print}' "$input_file" | tail -n +2
