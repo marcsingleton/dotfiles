@@ -39,6 +39,6 @@ else
 fi
 
 while IFS=$SEP read header seq; do
-    printf "$header\n"
+    printf ">$header\n"
     printf "$seq\n" | fold -w $WIDTH
 done
