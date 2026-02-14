@@ -25,12 +25,12 @@ printf "usage: ${0##*/} [-p <chain_id_prefix>] [-w <width>] [file]\n"
 }
 
 print_residues() {
-for residue in ${residues[@]}; do
+for residue in "${residues[@]}"; do
     # Map residue to sym
     sym="${RESIDUE_MAP[$residue]}"
     if [ -z "$sym" ]; then
         if [ $ERROR_ON_UNKNOWN -eq 1 ]; then
-            printf "\n${0##*/}: unknown residue $residue in chain $chain_id\n" > /dev/stderr
+            printf "\n${0##*/}: unknown residue \"$residue\" in chain $chain_id\n" > /dev/stderr
             exit 1
         fi
 
@@ -93,6 +93,9 @@ while read -u 3 line; do
         break
    fi
 done
+if [ "$record_type" != "SEQRES" ]; then
+    exit 1
+fi
 chain_id="${line:11:1}"
 residues="${line:19}"
 
