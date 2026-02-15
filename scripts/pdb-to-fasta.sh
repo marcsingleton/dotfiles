@@ -4,6 +4,16 @@
 
 # Uses the SEQRES records as the sequence source
 
+set -e
+
+# Check shell options
+if [ -n "$BASH_VERSION" -a "${BASH_VERSINFO[0]}" -lt 4 ] ; then
+    printf "${0##*/}: requires minimum Bash version 4 for associative arrays\n" > /dev/stderr
+    exit 1
+elif [ -n "$ZSH_VERSION" ]; then
+    setopt shwordsplit  # Enables word splitting like bash
+fi
+
 # Constants
 declare -A RESIDUE_MAP=(
     # (L-) AMINO ACIDS
