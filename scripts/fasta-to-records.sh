@@ -26,10 +26,13 @@ done
 shift $((OPTIND - 1))
 
 # Check if a file argument is provided
-if [ $# -eq 1 ]; then
+if [ $# -eq 0 ]; then
+  input_file="/dev/stdin"  # Read from STDIN if no file is provided
+elif [ $# -eq 1 ]; then
   input_file="$1"
 else
-  input_file="/dev/stdin"  # Read from STDIN if no file is provided
+  printf "${0##*/}: More than one input file provided.\n"
+  exit 1
 fi
 
 # Execute the awk command with the specified output delimiter
