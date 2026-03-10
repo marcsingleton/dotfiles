@@ -11,7 +11,7 @@ printf "usage: ${0##*/} [-d <delimiter>] [<file>]\n"
 SEP=$'\t' # Default output delimiter
 
 while getopts "d:h" opt; do
-  case $opt in
+  case "$opt" in
     d)
       SEP="$OPTARG"
       ;;

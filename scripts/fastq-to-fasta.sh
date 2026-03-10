@@ -11,7 +11,7 @@ printf "usage: ${0##*/} [<file>]\n"
 }
 
 while getopts "h" opt; do
-  case $opt  in 
+  case "$opt" in 
     h|*)
       print_usage
       exit 1

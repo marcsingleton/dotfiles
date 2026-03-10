@@ -40,10 +40,10 @@ else
 fi
 
 while IFS=$SEP read header seq; do
-    printf ">$header\n"
-    i=0
-    while [ $i -lt ${#seq} ]; do
-        printf "${seq:i:$WIDTH}\n"
-        i=$(($i + $WIDTH))
-    done
+  printf ">$header\n"
+  i=0
+  while [ $i -lt ${#seq} ]; do
+    printf "${seq:i:$WIDTH}\n"
+    i=$(($i + $WIDTH))
+  done
 done

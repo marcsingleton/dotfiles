@@ -8,24 +8,24 @@ set -e
 
 # Check shell options
 if [ -n "$BASH_VERSION" -a "${BASH_VERSINFO[0]}" -lt 4 ] ; then
-    printf "${0##*/}: requires minimum Bash version 4 for associative arrays\n" > /dev/stderr
-    exit 1
+  printf "${0##*/}: requires minimum Bash version 4 for associative arrays\n" > /dev/stderr
+  exit 1
 elif [ -n "$ZSH_VERSION" ]; then
-    setopt shwordsplit  # Enables word splitting like bash
+  setopt shwordsplit  # Enables word splitting like bash
 fi
 
 # Constants
 declare -A RESIDUE_MAP=(
-    # (L-) AMINO ACIDS
-    [ALA]=A [ARG]=R [ASN]=N [ASP]=D [CYS]=C
-    [GLN]=Q [GLU]=E [GLY]=G [HIS]=H [ILE]=I
-    [LEU]=L [LYS]=K [MET]=M [PHE]=F [PRO]=P
-    [SER]=S [THR]=T [TRP]=W [TYR]=Y [VAL]=V
-    [SEC]=U [PYL]=O
-    [ASX]=B [GLX]=Z
-    [UNK]=X
-    # DEOXYRIBONUCLEOTIDES
-    [DA]=A [DC]=C [DG]=G [DT]=T [DI]=I
+  # (L-) AMINO ACIDS
+  [ALA]=A [ARG]=R [ASN]=N [ASP]=D [CYS]=C
+  [GLN]=Q [GLU]=E [GLY]=G [HIS]=H [ILE]=I
+  [LEU]=L [LYS]=K [MET]=M [PHE]=F [PRO]=P
+  [SER]=S [THR]=T [TRP]=W [TYR]=Y [VAL]=V
+  [SEC]=U [PYL]=O
+  [ASX]=B [GLX]=Z
+  [UNK]=X
+  # DEOXYRIBONUCLEOTIDES
+  [DA]=A [DC]=C [DG]=G [DT]=T [DI]=I
 )
 UNKNOWN_AA=X
 UNKNOWN_NT=N
@@ -36,28 +36,28 @@ printf "usage: ${0##*/} [-p <chain_id_prefix>] [-w <width>] [file]\n"
 
 print_residues() {
 for residue in "${residues[@]}"; do
-    # Map residue to sym
-    sym="${RESIDUE_MAP[$residue]}"
-    if [ -z "$sym" ]; then
-        if [ $ERROR_ON_UNKNOWN -eq 1 ]; then
-            printf "\n${0##*/}: unknown residue \"$residue\" in chain $chain_id\n" > /dev/stderr
-            exit 1
-        fi
-
-        if [ ${#residue} -ge 3 ]; then
-            sym="$UNKNOWN_AA"
-        else
-            sym="$UNKNOWN_NT"
-        fi
+  # Map residue to sym
+  sym="${RESIDUE_MAP[$residue]}"
+  if [ -z "$sym" ]; then
+    if [ $ERROR_ON_UNKNOWN -eq 1 ]; then
+      printf "\n${0##*/}: unknown residue \"$residue\" in chain $chain_id\n" > /dev/stderr
+      exit 1
     fi
-    len=$((len + 1))
 
-    # Format
-    printf "$sym"
-    if [ $len -ge $WIDTH ]; then
-        printf "\n"
-        len=0
+    if [ ${#residue} -ge 3 ]; then
+      sym="$UNKNOWN_AA"
+    else
+      sym="$UNKNOWN_NT"
     fi
+  fi
+  len=$((len + 1))
+
+  # Format
+  printf "$sym"
+  if [ $len -ge $WIDTH ]; then
+    printf "\n"
+    len=0
+  fi
 done
 }
 
@@ -98,13 +98,13 @@ exec 3< "$input_file"  # Opens input on file descriptor 3
 
 # Read to first SEQRES record
 while read -u 3 line; do
-    record_type="${line:0:6}"
-    if [ "$record_type" = "SEQRES" ]; then
-        break
-   fi
+  record_type="${line:0:6}"
+  if [ "$record_type" = "SEQRES" ]; then
+    break
+ fi
 done
 if [ "$record_type" != "SEQRES" ]; then
-    exit 1
+  exit 1
 fi
 chain_id="${line:11:1}"
 residues="${line:19}"
@@ -119,21 +119,21 @@ print_residues
 
 # Iterate over lines
 while read -u 3 line; do
-    record_type="${line:0:6}"
-    chain_id="${line:11:1}"
-    residues="${line:19}"
+  record_type="${line:0:6}"
+  chain_id="${line:11:1}"
+  residues="${line:19}"
 
-    if [ "$record_type" != "SEQRES" ]; then
-        printf "\n"
-        exit
-    fi
-    
-    if [ "$current_chain_id" != "$chain_id" ]; then
-        printf "\n>${ID_PREFIX}${chain_id}\n"
-        current_chain_id="$chain_id"
-        len=0
-    fi
-    
-    residues=($residues)
-    print_residues
+  if [ "$record_type" != "SEQRES" ]; then
+    printf "\n"
+    exit
+  fi
+  
+  if [ "$current_chain_id" != "$chain_id" ]; then
+    printf "\n>${ID_PREFIX}${chain_id}\n"
+    current_chain_id="$chain_id"
+    len=0
+  fi
+  
+  residues=($residues)
+  print_residues
 done
