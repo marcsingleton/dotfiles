@@ -29,7 +29,6 @@ else
   exit 1
 fi
 
-
 program='
 BEGIN {COUNT=0}
 length($0) > 0 {
