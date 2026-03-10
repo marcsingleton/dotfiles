@@ -7,7 +7,7 @@
 set -e
 
 print_usage() {
-printf "usage: ${0##*/} [-d <delimiter>] [-w <width>] [file]\n"
+printf "usage: ${0##*/} [-d <delimiter>] [-w <width>] [<file>]\n"
 }
 
 SEP=$'\t' # Default output delimiter
