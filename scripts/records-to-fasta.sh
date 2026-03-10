@@ -2,8 +2,6 @@
 
 # Parses delimited records of header and sequence into FASTA output
 
-# Requires fold
-
 set -e
 
 print_usage() {
@@ -43,5 +41,9 @@ fi
 
 while IFS=$SEP read header seq; do
     printf ">$header\n"
-    printf "$seq\n" | fold -w $WIDTH
+    i=0
+    while [ $i -lt ${#seq} ]; do
+        printf "${seq:i:$WIDTH}\n"
+        i=$(($i + $WIDTH))
+    done
 done
