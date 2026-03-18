@@ -7,12 +7,12 @@
 set -e
 
 print_usage() {
-printf "usage: ${0##*/} [<file>]\n"
+  printf "usage: ${0##*/} [<file>]\n"
 }
 
 while getopts "h" opt; do
-  case "$opt" in 
-    h|*)
+  case "$opt" in
+    h | *)
       print_usage
       exit 1
       ;;
@@ -21,7 +21,7 @@ done
 
 # Check if a file argument is provided
 if [ $# -eq 0 ]; then
-  input_file="/dev/stdin"  # Read from STDIN if no file is provided
+  input_file="/dev/stdin" # Read from STDIN if no file is provided
 elif [ $# -eq 1 ]; then
   input_file="$1"
 else
@@ -38,4 +38,4 @@ length($0) > 0 {
 }
 '
 
-awk "$program"  "$input_file"
+awk "$program" "$input_file"

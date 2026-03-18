@@ -19,7 +19,7 @@ if [ -z "$jobs" ]; then
 fi
 
 # Use fzf to select multiple jobs to cancel
-selected_jobs=$(fzf --header="${header}"  --multi --height=25% <<< $jobs)
+selected_jobs=$(fzf --header="${header}" --multi --height=25% <<< $jobs)
 # Check if any jobs were selected
 if [ -z "$selected_jobs" ]; then
   echo "No jobs selected."
@@ -32,11 +32,11 @@ job_ids=$(echo "$selected_jobs" | awk '{print $1}')
 # Cancel the selected jobs
 for job_id in $job_ids; do
   scancel "$job_id"
-  
+
   # Confirm cancellation
   if [ $? -eq 0 ]; then
     echo "Job $job_id has been cancelled."
   else
     echo "Failed to cancel job $job_id."
-  fi  
+  fi
 done

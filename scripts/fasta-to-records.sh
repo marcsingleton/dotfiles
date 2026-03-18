@@ -5,7 +5,7 @@
 set -e
 
 print_usage() {
-printf "usage: ${0##*/} [-d <delimiter>] [<file>]\n"
+  printf "usage: ${0##*/} [-d <delimiter>] [<file>]\n"
 }
 
 SEP=$'\t' # Default output delimiter
@@ -15,7 +15,7 @@ while getopts "d:h" opt; do
     d)
       SEP="$OPTARG"
       ;;
-    h|*)
+    h | *)
       print_usage
       exit 1
       ;;
@@ -27,7 +27,7 @@ shift $((OPTIND - 1))
 
 # Check if a file argument is provided
 if [ $# -eq 0 ]; then
-  input_file="/dev/stdin"  # Read from STDIN if no file is provided
+  input_file="/dev/stdin" # Read from STDIN if no file is provided
 elif [ $# -eq 1 ]; then
   input_file="$1"
 else

@@ -8,7 +8,7 @@
 set -e
 
 print_usage() {
-printf "usage: ${0##*/} [-t dna|rna] <seq>\n"
+  printf "usage: ${0##*/} [-t dna|rna] <seq>\n"
 }
 
 type="dna"
@@ -22,7 +22,7 @@ while getopts "t:h" opt; do
       fi
       type="$OPTARG"
       ;;
-    h|*)
+    h | *)
       print_usage
       exit 1
       ;;
@@ -49,4 +49,4 @@ esac
 forward+="TtUuGgCc"
 reverse+="AaAaCcGg"
 
-printf "$1\n" | tr "$forward" "$reverse" | rev 
+printf "$1\n" | tr "$forward" "$reverse" | rev
