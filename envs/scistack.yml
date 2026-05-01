@@ -1,0 +1,9 @@
+name: scistack
+dependencies:
+  - jupyterlab
+  - matplotlib
+  - numpy
+  - pandas
+  - plotly
+  - python
+  - scipy
