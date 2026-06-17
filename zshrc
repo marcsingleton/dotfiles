@@ -45,5 +45,6 @@ alias tar='tar --no-xattrs'  # Prevents inclusion of xattr headers which throws 
 export COPYFILE_DISABLE=1  # Prevents creation of ._ members in archive which store MacOS specific information
 
 # slurm
-export SACCT_FORMAT=jobid,user,account,partition,state,exitcode,start,end,elapsed
+export SACCT_FORMAT='jobid,user,account,partition,state,exitcode,start,end,elapsed'
+export SQUEUE_FORMAT='%.18i %.10P %.15j %.8u %.8T %.11M %.11l %.11S %.6D %R'
 export SLURM_TIME_FORMAT=relative
