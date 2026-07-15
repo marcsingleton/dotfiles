@@ -35,7 +35,7 @@ else
   exit 1
 fi
 
-# Execute the awk command with the specified output delimiter
+# Awk FASTA parsing command with the specified output delimiter
 program='
 BEGIN {RS=">"; FS="\n"; ORS="\n"; OFS=""}
 {$1=$1 SEP; print}
