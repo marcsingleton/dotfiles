@@ -8,6 +8,17 @@ print_usage() {
   printf "usage: ${0##*/} [-d <delimiter>] [-w <width>] [<file>]\n"
 }
 
+write_fasta_record() {
+  local header="$1"
+  local seq="$2"
+  local width="$3"
+
+  printf ">$header\n"
+  for ((i = 0; i < ${#seq}; i += $width)); do
+    printf "${seq:i:$width}\n"
+  done
+}
+
 SEP=$'\t' # Default output delimiter
 WIDTH=80
 
@@ -40,10 +51,5 @@ else
 fi
 
 while IFS=$SEP read header seq; do
-  printf ">$header\n"
-  i=0
-  while [ $i -lt ${#seq} ]; do
-    printf "${seq:i:$WIDTH}\n"
-    i=$(($i + $WIDTH))
-  done
+  write_fasta_record "$header" "$seq" $WIDTH
 done
