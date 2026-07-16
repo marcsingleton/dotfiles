@@ -1,0 +1,51 @@
+python
+STYLES = {
+    'cartoon': {
+        'ray_trace_mode': 1,             # 1 renders with outlines
+        'ray_shadows': 'off',            # Turns off ray trace shadows
+        'ray_trace_color': 'black',      # Ray trace outline
+        'ray_trace_disco_factor': 1,     # No lines on surfaces
+        'antialias': 2,
+        'ambient': 0.5,                  # Ambient light
+        'direct': 0.2,                   # Camera light
+        'spec_direct': 0,                # Turn off camera specular reflections
+        'light_count': 1,                # Use only ambient and camera light
+        'cartoon_discrete_colors': 'on', # Turn off color blending at boundaries
+    },
+    'spheres': {
+        'antialias': 2,
+        'ambient': 0.2,                  # Ambient light
+        'spec_direct': 0,                # Turn off camera specular reflections
+        'light_count': 1,                # Use only ambient and camera light
+    },
+    'surface': {
+        'ray_trace_mode': 1,             # 1 renders with outlines
+        'ray_shadows': 'off',            # Turns off ray trace shadows
+        'ray_trace_color': 'black',      # Ray trace outline
+        'ray_trace_disco_factor': 1,     # No lines on surfaces
+        'antialias': 2,
+        'ambient': 0.65,                 # Ambient light
+        'direct': 0,                     # Camera light
+        'spec_direct': 0,                # Turn off camera specular reflections
+        'light_count': 1,                # Use only ambient and camera light
+        'surface_quality': 1,
+    },
+    'high_contrast': {
+        'ray_trace_mode': 1,             # 1 renders with outlines
+        'ray_shadows': 'off',            # Turns off ray trace shadows
+        'ray_trace_color': 'black',      # Ray trace outline
+        'ray_trace_disco_factor': 1,     # No lines on surfaces
+        'antialias': 2,
+        'ambient': 1,                    # Ambient light
+        'direct': 0,                     # Camera light
+        'spec_direct': 0,                # Turn off camera specular reflections
+        'light_count': 1,                # Use only ambient and camera light
+        'cartoon_discrete_colors': 'on', # Turn off color blending at boundaries
+        'surface_quality': 1,
+        'depth_cue': 'off',
+    },
+}
+python end
+
+set assembly, 1
+set internal_gui_width, 300
