@@ -1,3 +1,4 @@
+cmd.feedback('disable', 'all', 'output')
 python
 STYLES = {
     'cartoon': {
@@ -46,6 +47,7 @@ STYLES = {
     },
 }
 python end
+cmd.feedback('enable', 'all', 'output')
 
 set assembly, 1
 set internal_gui_width, 300
