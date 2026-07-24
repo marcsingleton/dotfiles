@@ -5,7 +5,7 @@
 set -e
 
 print_usage() {
-  printf "usage: ${0##*/} [-d <delimiter>] [<file>]\n"
+  printf "usage: %s [-d <delimiter>] [<file>]\n" "${0##*/}"
 }
 
 SEP=$'\t' # Default output delimiter
@@ -31,7 +31,7 @@ if [ $# -eq 0 ]; then
 elif [ $# -eq 1 ]; then
   input_file="$1"
 else
-  printf "${0##*/}: More than one input file provided.\n"
+  printf "%s: More than one input file provided.\n" "${0##*/}"
   exit 1
 fi
 

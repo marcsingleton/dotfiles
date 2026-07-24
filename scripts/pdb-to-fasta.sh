@@ -8,7 +8,7 @@ set -e
 
 # Check shell options
 if [ -n "$BASH_VERSION" -a "${BASH_VERSINFO[0]}" -lt 4 ]; then
-  printf "${0##*/}: requires minimum Bash version 4 for associative arrays\n" > /dev/stderr
+  printf "%s: requires minimum Bash version 4 for associative arrays\n" "${0##*/}" > /dev/stderr
   exit 1
 elif [ -n "$ZSH_VERSION" ]; then
   setopt shwordsplit # Enables word splitting like bash
@@ -31,7 +31,7 @@ UNKNOWN_AA=X
 UNKNOWN_NT=N
 
 print_usage() {
-  printf "usage: ${0##*/} [-p <chain_id_prefix>] [-w <width>] [file]\n"
+  printf "usage: %s [-p <chain_id_prefix>] [-w <width>] [file]\n" "${0##*/}"
 }
 
 print_residues() {
@@ -40,7 +40,7 @@ print_residues() {
     sym="${RESIDUE_MAP[$residue]}"
     if [ -z "$sym" ]; then
       if [ $ERROR_ON_UNKNOWN -eq 1 ]; then
-        printf "\n${0##*/}: unknown residue \"$residue\" in chain $chain_id\n" > /dev/stderr
+        printf "\n%s: unknown residue \"%s\" in chain %s\n" "${0##*/}" "$residue" "$chain_id" > /dev/stderr
         exit 1
       fi
 
@@ -53,7 +53,7 @@ print_residues() {
     len=$((len + 1))
 
     # Format
-    printf "$sym"
+    printf "%s" "$sym"
     if [ $len -ge $WIDTH ]; then
       printf "\n"
       len=0
@@ -110,7 +110,7 @@ chain_id="${line:11:1}"
 residues="${line:19}"
 
 # Create header
-printf ">${ID_PREFIX}${chain_id}\n"
+printf ">%s\n" "${ID_PREFIX}${chain_id}"
 current_chain_id="$chain_id"
 len=0
 
@@ -129,7 +129,7 @@ while read -u 3 line; do
   fi
 
   if [ "$current_chain_id" != "$chain_id" ]; then
-    printf "\n>${ID_PREFIX}${chain_id}\n"
+    printf "\n>%s\n" "${ID_PREFIX}${chain_id}"
     current_chain_id="$chain_id"
     len=0
   fi

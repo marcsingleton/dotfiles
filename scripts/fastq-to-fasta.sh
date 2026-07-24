@@ -7,7 +7,7 @@
 set -e
 
 print_usage() {
-  printf "usage: ${0##*/} [<file>]\n"
+  printf "usage: %s [<file>]\n" "${0##*/}"
 }
 
 while getopts "h" opt; do
@@ -25,7 +25,7 @@ if [ $# -eq 0 ]; then
 elif [ $# -eq 1 ]; then
   input_file="$1"
 else
-  printf "${0##*/}: More than one input file provided.\n"
+  printf "%s: More than one input file provided.\n" "${0##*/}"
   exit 1
 fi
 

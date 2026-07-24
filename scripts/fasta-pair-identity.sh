@@ -12,7 +12,7 @@
 set -e
 
 print_usage() {
-  printf "usage: ${0##*/} [-w <width>] [<file>]\n"
+  printf "usage: %s [-w <width>] [<file>]\n" "${0##*/}"
 }
 
 write_fasta_record() {
@@ -20,9 +20,9 @@ write_fasta_record() {
   local seq="$2"
   local width="$3"
 
-  printf ">$header\n" 
+  printf ">%s\n" "$header"
   for ((i = 0; i < ${#seq}; i += $width)); do
-    printf "${seq:$i:$width}\n"
+    printf "%s\n" "${seq:$i:$width}"
   done
 }
 
@@ -59,7 +59,7 @@ if [ $# -eq 0 ]; then
 elif [ $# -eq 1 ]; then
   input_file="$1"
 else
-  printf "${0##*/}s: More than one input file provided.\n"
+  printf "%s: More than one input file provided.\n" "${0##*/}"
   exit 1
 fi
 

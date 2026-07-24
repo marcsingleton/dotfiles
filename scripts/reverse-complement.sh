@@ -8,7 +8,7 @@
 set -e
 
 print_usage() {
-  printf "usage: ${0##*/} [-t dna|rna] <seq>\n"
+  printf "usage: %s [-t dna|rna] <seq>\n" "${0##*/}"
 }
 
 type="dna"
@@ -17,7 +17,7 @@ while getopts "t:h" opt; do
   case "$opt" in
     t)
       if [ "$OPTARG" != "dna" ] && [ "$OPTARG" != "rna" ]; then
-        printf "${0##*/}: Type is not dna or rna\n"
+        printf "%s: Type is not dna or rna\n" "${0##*/}"
         exit 1
       fi
       type="$OPTARG"
@@ -32,7 +32,7 @@ done
 shift $((OPTIND - 1))
 
 if [ $# -ne 1 ]; then
-  printf "${0##*/}: Argument not provided.\n"
+  printf "%s: Argument not provided.\n" "${0##*/}"
   exit 1
 fi
 
@@ -49,4 +49,4 @@ esac
 forward+="TtUuGgCc"
 reverse+="AaAaCcGg"
 
-printf "$1\n" | tr "$forward" "$reverse" | rev
+printf "%s\n" "$1" | tr "$forward" "$reverse" | rev
