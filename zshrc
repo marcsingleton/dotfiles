@@ -2,6 +2,7 @@
 export PS1='%B%n%F{red}@%f%m%b:%F{green}%(4~|.../|)%3~%f $ '
 export PS1=$'\e[1m\u\e[31m@\e[39m\H\e[0m:\e[33m\W\e[0m > '  # Bash alternative
 export LSCOLORS=fxgxcxdxbxegedabagacad
+export MANPAGER='less --use-color -Dd+C -Du+M -DP -DSkY -DE-R'  # bold:+cyan; underline:+magenta; no prompt; highlight:black-yellow; error:-red
 
 # words
 WORDCHARS='*?_-.[]~=&;:!#$%^(){}<>'
