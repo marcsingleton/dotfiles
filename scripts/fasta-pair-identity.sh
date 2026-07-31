@@ -67,11 +67,12 @@ fi
 SEP=$'\31' # Use unit separator control character to avoid collisions
 program='
 BEGIN {RS=">"; FS="\n"; ORS="\n"; OFS=""}
+NR==1 {next}
 {$1=$1 SEP; print}
 '
 
 # Parse records
-exec 3< <(awk -v SEP="$SEP" "$program" "$input_file" | tail -n +2) # Open on fd 3
+exec 3< <(awk -v SEP="$SEP" "$program" "$input_file") # Open on fd 3
 IFS="$SEP" read -u 3 header1 seq1
 IFS="$SEP" read -u 3 header2 seq2
 exec 3>&- # Close fd 3

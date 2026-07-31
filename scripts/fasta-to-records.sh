@@ -38,7 +38,8 @@ fi
 # Awk FASTA parsing command with the specified output delimiter
 program='
 BEGIN {RS=">"; FS="\n"; ORS="\n"; OFS=""}
+NR==1 {next}
 {$1=$1 SEP; print}
 '
 
-awk -v SEP="$SEP" "$program" "$input_file" | tail -n +2
+awk -v SEP="$SEP" "$program" "$input_file"
