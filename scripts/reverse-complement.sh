@@ -11,6 +11,25 @@ print_usage() {
   printf "usage: %s [-t dna|rna] <seq>\n" "${0##*/}" > /dev/stderr
 }
 
+reverse_complement() {
+  local seq="$1"
+
+  case "$type" in
+  dna)
+    forward="Aa"
+    reverse="Tt"
+    ;;
+  rna)
+    forward="Aa"
+    reverse="Uu"
+    ;;
+  esac
+  forward+="TtUuGgCc"
+  reverse+="AaAaCcGg"
+
+  printf "%s\n" "$seq" | tr "$forward" "$reverse" | rev
+}
+
 # Default args
 type="dna"
 
@@ -51,4 +70,4 @@ esac
 forward+="TtUuGgCc"
 reverse+="AaAaCcGg"
 
-printf "%s\n" "$1" | tr "$forward" "$reverse" | rev
+reverse_complement "$1"
