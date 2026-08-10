@@ -5,11 +5,12 @@
 set -e
 
 print_usage() {
-  printf "usage: %s [-d <delimiter>] [<file>]\n" "${0##*/}"
+  printf "usage: %s [-d <delimiter>] [<file>]\n" "${0##*/}" > /dev/stderr
 }
 
 SEP=$'\t' # Default output delimiter
 
+# Parse args
 while getopts "d:h" opt; do
   case "$opt" in
     d)
@@ -21,17 +22,15 @@ while getopts "d:h" opt; do
       ;;
   esac
 done
+shift $((OPTIND - 1)) # Shift to get the file argument
 
-# Shift to get the file argument
-shift $((OPTIND - 1))
-
-# Check if a file argument is provided
+# Validate args
 if [ $# -eq 0 ]; then
   input_file="/dev/stdin" # Read from STDIN if no file is provided
 elif [ $# -eq 1 ]; then
   input_file="$1"
 else
-  printf "%s: More than one input file provided.\n" "${0##*/}"
+  printf "%s: More than one input file provided.\n" "${0##*/}" > /dev/stderr
   exit 1
 fi
 

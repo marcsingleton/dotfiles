@@ -1,4 +1,4 @@
-#/bin/bash
+#!/bin/bash
 
 # Calulate the reverse complement of a sequence
 
@@ -8,18 +8,15 @@
 set -e
 
 print_usage() {
-  printf "usage: %s [-t dna|rna] <seq>\n" "${0##*/}"
+  printf "usage: %s [-t dna|rna] <seq>\n" "${0##*/}" > /dev/stderr
 }
 
 type="dna"
 
+# Parse args
 while getopts "t:h" opt; do
   case "$opt" in
     t)
-      if [ "$OPTARG" != "dna" ] && [ "$OPTARG" != "rna" ]; then
-        printf "%s: Type is not dna or rna\n" "${0##*/}"
-        exit 1
-      fi
       type="$OPTARG"
       ;;
     h | *)
@@ -28,11 +25,15 @@ while getopts "t:h" opt; do
       ;;
   esac
 done
+shift $((OPTIND - 1)) # Shift to get the file argument
 
-shift $((OPTIND - 1))
-
+# Validate args
+if [ "$type" != "dna" ] && [ "$type" != "rna" ]; then
+  printf "%s: Type is not dna or rna\n" "${0##*/}"
+  exit 1
+fi
 if [ $# -ne 1 ]; then
-  printf "%s: Argument not provided.\n" "${0##*/}"
+  printf "%s: Argument not provided.\n" "${0##*/}" > /dev/stderr
   exit 1
 fi
 

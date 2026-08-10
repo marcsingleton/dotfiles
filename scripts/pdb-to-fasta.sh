@@ -8,7 +8,7 @@ set -e
 
 # Check shell options
 if [ -n "$BASH_VERSION" -a "${BASH_VERSINFO[0]}" -lt 4 ]; then
-  printf "%s: requires minimum Bash version 4 for associative arrays\n" "${0##*/}" > /dev/stderr
+  printf "%s: Requires minimum Bash version 4 for associative arrays.\n" "${0##*/}" > /dev/stderr
   exit 1
 elif [ -n "$ZSH_VERSION" ]; then
   setopt shwordsplit # Enables word splitting like bash
@@ -31,7 +31,7 @@ UNKNOWN_AA=X
 UNKNOWN_NT=N
 
 print_usage() {
-  printf "usage: %s [-p <chain_id_prefix>] [-w <width>] [file]\n" "${0##*/}"
+  printf "usage: %s [-p <chain_id_prefix>] [-w <width>] [file]\n" "${0##*/}" > /dev/stderr
 }
 
 print_residues() {
@@ -40,7 +40,7 @@ print_residues() {
     sym="${RESIDUE_MAP[$residue]}"
     if [ -z "$sym" ]; then
       if [ $ERROR_ON_UNKNOWN -eq 1 ]; then
-        printf "\n%s: unknown residue \"%s\" in chain %s\n" "${0##*/}" "$residue" "$chain_id" > /dev/stderr
+        printf "\n%s: Unknown residue \"%s\" in chain %s.\n" "${0##*/}" "$residue" "$chain_id" > /dev/stderr
         exit 1
       fi
 
@@ -66,7 +66,7 @@ ID_PREFIX="chain_"
 WIDTH=80
 ERROR_ON_UNKNOWN=1
 
-# Parse arguments
+# Parse args
 while getopts "p:w:eh" opt; do
   case $opt in
     p)
@@ -84,10 +84,9 @@ while getopts "p:w:eh" opt; do
       ;;
   esac
 done
+shift $(($OPTIND - 1)) # Shift to get the file argument
 
-shift $(($OPTIND - 1))
-
-# Check if a file argument is provided
+# Validate args
 if [ $# -eq 1 ]; then
   input_file="$1"
 else
