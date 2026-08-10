@@ -36,13 +36,14 @@ is_gap() {
   fi
 }
 
-WIDTH=80
+# Default args
+width=80
 
 # Parse args
 while getopts "w:h" opt; do
   case $opt in
     w)
-      WIDTH="$OPTARG"
+      width="$OPTARG"
       ;;
     h | *)
       print_usage
@@ -116,6 +117,6 @@ done
 header="ident_data len1=${#seq1} len2=${#seq2} ngap1=$ngap1 ngap2=$ngap2 naln=$naln nident=$nident"
 
 # Write outputs
-write_fasta_record "$header1" "$seq1" $WIDTH
-write_fasta_record "$header" "$seq" $WIDTH
-write_fasta_record "$header2" "$seq2" $WIDTH
+write_fasta_record "$header1" "$seq1" $width
+write_fasta_record "$header" "$seq" $width
+write_fasta_record "$header2" "$seq2" $width

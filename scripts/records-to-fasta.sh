@@ -19,17 +19,18 @@ write_fasta_record() {
   done
 }
 
-SEP=$'\t' # Default output delimiter
-WIDTH=80
+# Default args
+sep=$'\t' # Output delimiter
+width=80
 
 # Parse args
 while getopts "d:w:h" opt; do
   case $opt in
     d)
-      SEP="$OPTARG"
+      sep="$OPTARG"
       ;;
     w)
-      WIDTH="$OPTARG"
+      width="$OPTARG"
       ;;
     h | *)
       print_usage
@@ -49,6 +50,6 @@ else
   exit 1
 fi
 
-while IFS=$SEP read header seq; do
-  write_fasta_record "$header" "$seq" $WIDTH
+while IFS=$sep read header seq; do
+  write_fasta_record "$header" "$seq" $width
 done

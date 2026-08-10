@@ -11,6 +11,7 @@ print_usage() {
   printf "usage: %s [-t dna|rna] <seq>\n" "${0##*/}" > /dev/stderr
 }
 
+# Default args
 type="dna"
 
 # Parse args

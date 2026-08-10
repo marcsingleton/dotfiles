@@ -39,7 +39,7 @@ print_residues() {
     # Map residue to sym
     sym="${RESIDUE_MAP[$residue]}"
     if [ -z "$sym" ]; then
-      if [ $ERROR_ON_UNKNOWN -eq 1 ]; then
+      if [ $error_on_unknown -eq 1 ]; then
         printf "\n%s: Unknown residue \"%s\" in chain %s.\n" "${0##*/}" "$residue" "$chain_id" > /dev/stderr
         exit 1
       fi
@@ -54,29 +54,29 @@ print_residues() {
 
     # Format
     printf "%s" "$sym"
-    if [ $len -ge $WIDTH ]; then
+    if [ $len -ge $width ]; then
       printf "\n"
       len=0
     fi
   done
 }
 
-# Default options
-ID_PREFIX="chain_"
-WIDTH=80
-ERROR_ON_UNKNOWN=1
+# Default args
+id_prefix="chain_"
+width=80
+error_on_unknown=1
 
 # Parse args
 while getopts "p:w:eh" opt; do
   case $opt in
     p)
-      ID_PREFIX="$OPTARG"
+      id_prefix="$OPTARG"
       ;;
     w)
-      WIDTH="$OPTARG"
+      width="$OPTARG"
       ;;
     e)
-      ERROR_ON_UNKNOWN=0
+      error_on_unknown=0
       ;;
     h | *)
       print_usage
@@ -109,7 +109,7 @@ chain_id="${line:11:1}"
 residues="${line:19}"
 
 # Create header
-printf ">%s\n" "${ID_PREFIX}${chain_id}"
+printf ">%s\n" "${id_prefix}${chain_id}"
 current_chain_id="$chain_id"
 len=0
 
@@ -128,7 +128,7 @@ while read -u 3 line; do
   fi
 
   if [ "$current_chain_id" != "$chain_id" ]; then
-    printf "\n>%s\n" "${ID_PREFIX}${chain_id}"
+    printf "\n>%s\n" "${id_prefix}${chain_id}"
     current_chain_id="$chain_id"
     len=0
   fi

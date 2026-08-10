@@ -8,13 +8,14 @@ print_usage() {
   printf "usage: %s [-d <delimiter>] [<file>]\n" "${0##*/}" > /dev/stderr
 }
 
-SEP=$'\t' # Default output delimiter
+# Default args
+sep=$'\t' # Output delimiter
 
 # Parse args
 while getopts "d:h" opt; do
   case "$opt" in
     d)
-      SEP="$OPTARG"
+      sep="$OPTARG"
       ;;
     h | *)
       print_usage
@@ -38,7 +39,7 @@ fi
 program='
 BEGIN {RS=">"; FS="\n"; ORS="\n"; OFS=""}
 NR==1 {next}
-{$1=$1 SEP; print}
+{$1=$1 sep; print}
 '
 
-awk -v SEP="$SEP" "$program" "$input_file"
+awk -v sep="$sep" "$program" "$input_file"
