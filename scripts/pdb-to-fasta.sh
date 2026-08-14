@@ -2,7 +2,8 @@
 
 # Parse sequences from PDB files into FASTA output
 
-# Uses the SEQRES records as the sequence source
+# Can use SEQRES or ATOM records as the sequence source
+# Insertion codes are ignored in ATOM records
 
 set -e
 
@@ -129,9 +130,63 @@ from_atom() {
 
   exec 3< "$input_file" # Opens input on file descriptor 3
 
-  exec 3<&- # Close fd
+  # Read to first ATOM record
+  while read -u 3 line; do
+    record_type="${line:0:6}"
+    if [ "$record_type" = "ATOM  " ]; then
+      break
+    fi
+  done
+  if [ "$record_type" != "ATOM  " ]; then
+    exit 1
+  fi
+  
+  res_name="${line:17:3}"
+  chain_id="${line:21:1}"
+  res_seq="${line:22:4}"
 
-  printf "Not implemented.\n"
+  # Initialize record
+  current_chain_id="$chain_id"
+  current_res_seq="$res_seq"
+  header="${id_prefix}${chain_id}"
+  seq="$(map_res_names "$res_name")"
+
+  # Iterate over lines
+  while read -u 3 line; do
+    record_type="${line:0:6}"
+
+    if [ "$record_type" != "ATOM  " -a \
+         "$record_type" != "HETATM" -a \
+         "$record_type" != "TER   " -a \
+         "$record_type" != "ANISOU" ]; then
+        break
+    fi
+    if [ "$record_type" != "ATOM  " ]; then
+      continue
+    fi
+
+    res_name="${line:17:3}"
+    chain_id="${line:21:1}"
+    res_seq="${line:22:4}"
+
+    if [ "$current_chain_id" != "$chain_id" ]; then
+      print_fasta_record "$header" "$seq" "$width"
+      current_chain_id="$chain_id"
+      current_res_seq=""
+      header="${id_prefix}${chain_id}"
+      seq=""
+    fi
+    
+    if [ -z "$current_res_seq" -o "$current_res_seq" != "$res_seq" ]; then
+      current_res_seq="$res_seq"
+      seq+=$(map_res_names "$res_name")
+    fi
+
+  done
+
+  print_fasta_record "$header" "$seq" "$width"
+
+  exec 3<&- # Close fd
 }
 
 # Default args
