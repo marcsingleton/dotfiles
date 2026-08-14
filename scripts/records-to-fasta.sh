@@ -50,6 +50,8 @@ else
   exit 1
 fi
 
-while IFS=$sep read header seq; do
+exec 3< "$input_file"
+while IFS="$sep" read -u 3 header seq; do
   print_fasta_record "$header" "$seq" "$width"
 done
+exec 3<&-
