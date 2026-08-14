@@ -34,7 +34,21 @@ print_usage() {
   printf "usage: %s [-m seqres|atom] <[-p <chain_id_prefix>] [-w <width>] [<file>]\n" "${0##*/}" > /dev/stderr
 }
 
-print_residues() {
+print_fasta_record() {
+  local header="$1"
+  local seq="$2"
+  local width="$3"
+
+  printf ">%s\n" "$header"
+  for ((i = 0; i < ${#seq}; i += $width)); do
+    printf "%s\n" "${seq:$i:$width}"
+  done
+}
+
+map_residues() {
+  local residues=($1) # Splits on spaces
+  local seq=""
+
   for residue in "${residues[@]}"; do
     # Map residue to sym
     sym="${RESIDUE_MAP[$residue]}"
@@ -50,20 +64,17 @@ print_residues() {
         sym="$UNKNOWN_NT"
       fi
     fi
-    len=$((len + 1))
 
-    # Format
-    printf "%s" "$sym"
-    if [ $len -gt $width ]; then
-      printf "\n"
-      len=0
-    fi
+    seq+="$sym"
   done
+
+  printf "%s" "$seq"
 }
 
 from_seqres() {
   local input_file="$1"
   local id_prefix="$2"
+  local width="$3"
 
   exec 3< "$input_file" # Opens input on file descriptor 3
 
@@ -80,13 +91,10 @@ from_seqres() {
   chain_id="${line:11:1}"
   residues="${line:19}"
 
-  # Create header
-  printf ">%s\n" "${id_prefix}${chain_id}"
+  # Initialize record
   current_chain_id="$chain_id"
-  len=0
-
-  residues=($residues)
-  print_residues
+  header="${id_prefix}${chain_id}"
+  seq="$(map_residues "$residues")"
 
   # Iterate over lines
   while read -u 3 line; do
@@ -95,19 +103,21 @@ from_seqres() {
     residues="${line:19}"
 
     if [ "$record_type" != "SEQRES" ]; then
-      printf "\n"
-      exit
+        break
     fi
 
     if [ "$current_chain_id" != "$chain_id" ]; then
-      printf "\n>%s\n" "${id_prefix}${chain_id}"
+      print_fasta_record "$header" "$seq" "$width"
       current_chain_id="$chain_id"
-      len=0
+      header="${id_prefix}${chain_id}"
+      seq=""
     fi
 
-    residues=($residues)
-    print_residues
+    seq+=$(map_residues "$residues")
+
   done
+
+  print_fasta_record "$header" "$seq" "$width"
 
   exec 3<&- # Close fd
 }
@@ -115,6 +125,7 @@ from_seqres() {
 from_atom() {
   local input_file="$1"
   local id_prefix="$2"
+  local width="$3"
 
   exec 3< "$input_file" # Opens input on file descriptor 3
 
@@ -165,9 +176,9 @@ fi
 
 case "$mode" in
   seqres)
-    from_seqres "$input_file" "$id_prefix"
+    from_seqres "$input_file" "$id_prefix" "$width"
     ;;
   atom)
-    from_atom "$input_file" "$id_prefix"
+    from_atom "$input_file" "$id_prefix" "$width"
     ;;
 esac
