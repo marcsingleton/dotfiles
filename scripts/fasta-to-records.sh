@@ -2,6 +2,8 @@
 
 # Parses FASTA files into delimited records of header and sequence output
 
+# Requires AWK
+
 set -e
 
 print_usage() {

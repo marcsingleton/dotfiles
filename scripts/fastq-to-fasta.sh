@@ -4,6 +4,8 @@
 
 # Assumes sequence lines are not wrapped but does allow for blank lines
 
+# Requires AWK
+
 set -e
 
 print_usage() {

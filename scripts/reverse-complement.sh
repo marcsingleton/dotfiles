@@ -5,6 +5,8 @@
 # Preserves molecule type (DNA vs RNA) and case
 # By default assumes type is DNA
 
+# Requires tr and rev
+
 set -e
 
 print_usage() {

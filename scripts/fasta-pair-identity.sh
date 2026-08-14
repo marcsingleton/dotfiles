@@ -9,6 +9,8 @@
 #   naln: number of aligned positions (excluding gap/gap pairs)
 #   nident: number of identities at aligned positions
 
+# Requires AWK
+
 set -e
 
 print_usage() {
