@@ -48,8 +48,8 @@ done
 shift $((OPTIND - 1)) # Shift to get the file argument
 
 # Validate args
-if [ "$type" != "dna" ] && [ "$type" != "rna" ]; then
-  printf "%s: Type is not dna or rna\n" "${0##*/}"
+if [ "$type" != "dna" -a "$type" != "rna" ]; then
+  printf "%s: Type is not dna or rna.\n" "${0##*/}"
   exit 1
 fi
 if [ $# -ne 1 ]; then
