@@ -31,7 +31,7 @@ UNKNOWN_AA=X
 UNKNOWN_NT=N
 
 print_usage() {
-  printf "usage: %s [-p <chain_id_prefix>] [-w <width>] [file]\n" "${0##*/}" > /dev/stderr
+  printf "usage: %s [-m seqres|atom] <[-p <chain_id_prefix>] [-w <width>] [<file>]\n" "${0##*/}" > /dev/stderr
 }
 
 print_residues() {
@@ -54,21 +54,87 @@ print_residues() {
 
     # Format
     printf "%s" "$sym"
-    if [ $len -ge $width ]; then
+    if [ $len -gt $width ]; then
       printf "\n"
       len=0
     fi
   done
 }
 
+from_seqres() {
+  local input_file="$1"
+  local id_prefix="$2"
+
+  exec 3< "$input_file" # Opens input on file descriptor 3
+
+  # Read to first SEQRES record
+  while read -u 3 line; do
+    record_type="${line:0:6}"
+    if [ "$record_type" = "SEQRES" ]; then
+      break
+    fi
+  done
+  if [ "$record_type" != "SEQRES" ]; then
+    exit 1
+  fi
+  chain_id="${line:11:1}"
+  residues="${line:19}"
+
+  # Create header
+  printf ">%s\n" "${id_prefix}${chain_id}"
+  current_chain_id="$chain_id"
+  len=0
+
+  residues=($residues)
+  print_residues
+
+  # Iterate over lines
+  while read -u 3 line; do
+    record_type="${line:0:6}"
+    chain_id="${line:11:1}"
+    residues="${line:19}"
+
+    if [ "$record_type" != "SEQRES" ]; then
+      printf "\n"
+      exit
+    fi
+
+    if [ "$current_chain_id" != "$chain_id" ]; then
+      printf "\n>%s\n" "${id_prefix}${chain_id}"
+      current_chain_id="$chain_id"
+      len=0
+    fi
+
+    residues=($residues)
+    print_residues
+  done
+
+  exec 3<&- # Close fd
+}
+
+from_atom() {
+  local input_file="$1"
+  local id_prefix="$2"
+
+  exec 3< "$input_file" # Opens input on file descriptor 3
+
+  exec 3<&- # Close fd
+
+  printf "Not implemented.\n"
+}
+
 # Default args
+mode="seqres"
 id_prefix="chain_"
 width=80
 error_on_unknown=1
 
 # Parse args
-while getopts "p:w:eh" opt; do
+while getopts "m:p:w:eh" opt; do
   case $opt in
+    m)
+      mode="$OPTARG"
+      ;;
     p)
       id_prefix="$OPTARG"
       ;;
@@ -92,47 +158,16 @@ if [ $# -eq 1 ]; then
 else
   input_file="/dev/stdin" # Read from STDIN if no file is provided
 fi
-
-exec 3< "$input_file" # Opens input on file descriptor 3
-
-# Read to first SEQRES record
-while read -u 3 line; do
-  record_type="${line:0:6}"
-  if [ "$record_type" = "SEQRES" ]; then
-    break
-  fi
-done
-if [ "$record_type" != "SEQRES" ]; then
+if [ "$mode" != "seqres" -a "$mode" != "atom" ]; then
+  printf "%s: Mode is not seqres or atom.\n" "${0##*/}"
   exit 1
 fi
-chain_id="${line:11:1}"
-residues="${line:19}"
 
-# Create header
-printf ">%s\n" "${id_prefix}${chain_id}"
-current_chain_id="$chain_id"
-len=0
-
-residues=($residues)
-print_residues
-
-# Iterate over lines
-while read -u 3 line; do
-  record_type="${line:0:6}"
-  chain_id="${line:11:1}"
-  residues="${line:19}"
-
-  if [ "$record_type" != "SEQRES" ]; then
-    printf "\n"
-    exit
-  fi
-
-  if [ "$current_chain_id" != "$chain_id" ]; then
-    printf "\n>%s\n" "${id_prefix}${chain_id}"
-    current_chain_id="$chain_id"
-    len=0
-  fi
-
-  residues=($residues)
-  print_residues
-done
+case "$mode" in
+  seqres)
+    from_seqres "$input_file" "$id_prefix"
+    ;;
+  atom)
+    from_atom "$input_file" "$id_prefix"
+    ;;
+esac
