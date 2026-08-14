@@ -45,20 +45,20 @@ print_fasta_record() {
   done
 }
 
-map_residues() {
-  local residues=($1) # Splits on spaces
+map_res_names() {
+  local res_names=($1) # Splits on spaces
   local seq=""
 
-  for residue in "${residues[@]}"; do
-    # Map residue to sym
-    sym="${RESIDUE_MAP[$residue]}"
+  for res_name in "${res_names[@]}"; do
+    # Map res_name to sym
+    sym="${RESIDUE_MAP[$res_name]}"
     if [ -z "$sym" ]; then
       if [ $error_on_unknown -eq 1 ]; then
-        printf "\n%s: Unknown residue \"%s\" in chain %s.\n" "${0##*/}" "$residue" "$chain_id" > /dev/stderr
+        printf "\n%s: Unknown res_name \"%s\" in chain %s.\n" "${0##*/}" "$res_name" "$chain_id" > /dev/stderr
         exit 1
       fi
 
-      if [ ${#residue} -ge 3 ]; then
+      if [ ${#res_name} -ge 3 ]; then
         sym="$UNKNOWN_AA"
       else
         sym="$UNKNOWN_NT"
@@ -89,22 +89,22 @@ from_seqres() {
     exit 1
   fi
   chain_id="${line:11:1}"
-  residues="${line:19}"
+  res_names="${line:19}"
 
   # Initialize record
   current_chain_id="$chain_id"
   header="${id_prefix}${chain_id}"
-  seq="$(map_residues "$residues")"
+  seq="$(map_res_names "$res_names")"
 
   # Iterate over lines
   while read -u 3 line; do
     record_type="${line:0:6}"
-    chain_id="${line:11:1}"
-    residues="${line:19}"
-
     if [ "$record_type" != "SEQRES" ]; then
         break
     fi
+
+    chain_id="${line:11:1}"
+    res_names="${line:19}"
 
     if [ "$current_chain_id" != "$chain_id" ]; then
       print_fasta_record "$header" "$seq" "$width"
@@ -113,7 +113,7 @@ from_seqres() {
       seq=""
     fi
 
-    seq+=$(map_residues "$residues")
+    seq+="$(map_res_names "$res_names")"
 
   done
 
