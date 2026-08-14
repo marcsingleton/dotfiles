@@ -15,7 +15,7 @@ print_usage() {
   printf "usage: %s [-w <width>] [<file>]\n" "${0##*/}" > /dev/stderr
 }
 
-write_fasta_record() {
+print_fasta_record() {
   local header="$1"
   local seq="$2"
   local width="$3"
@@ -117,6 +117,6 @@ done
 header="ident_data len1=${#seq1} len2=${#seq2} ngap1=$ngap1 ngap2=$ngap2 naln=$naln nident=$nident"
 
 # Write outputs
-write_fasta_record "$header1" "$seq1" $width
-write_fasta_record "$header" "$seq" $width
-write_fasta_record "$header2" "$seq2" $width
+print_fasta_record "$header1" "$seq1" "$width"
+print_fasta_record "$header" "$seq" "$width"
+print_fasta_record "$header2" "$seq2" "$width"

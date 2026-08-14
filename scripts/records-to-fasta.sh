@@ -8,7 +8,7 @@ print_usage() {
   printf "usage: %s [-d <delimiter>] [-w <width>] [<file>]\n" "${0##*/}" > /dev/stderr
 }
 
-write_fasta_record() {
+print_fasta_record() {
   local header="$1"
   local seq="$2"
   local width="$3"
@@ -51,5 +51,5 @@ else
 fi
 
 while IFS=$sep read header seq; do
-  write_fasta_record "$header" "$seq" $width
+  print_fasta_record "$header" "$seq" "$width"
 done
