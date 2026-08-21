@@ -101,9 +101,9 @@ for ((i = 0; i < $maxlen; i++)); do
   fi
 
   # Calculate metadata
-  if [ "$sym1" != "" -a "$sym2" != "" ] &&
-       ! is_gap "$sym1" &&
-       ! is_gap "$sym2"; then 
+  if [ "$sym1" != "" -a "$sym2" != "" ] \
+    && ! is_gap "$sym1" \
+    && ! is_gap "$sym2"; then
     ((naln++)) # "" checks prevent empty syms when lengths are mismatched
     if [ "$sym1" = "$sym2" ]; then
       ((nident++))

@@ -17,14 +17,14 @@ reverse_complement() {
   local seq="$1"
 
   case "$type" in
-  dna)
-    forward="Aa"
-    reverse="Tt"
-    ;;
-  rna)
-    forward="Aa"
-    reverse="Uu"
-    ;;
+    dna)
+      forward="Aa"
+      reverse="Tt"
+      ;;
+    rna)
+      forward="Aa"
+      reverse="Uu"
+      ;;
   esac
   forward+="TtUuGgCc"
   reverse+="AaAaCcGg"

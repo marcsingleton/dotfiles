@@ -101,7 +101,7 @@ from_seqres() {
   while read -u 3 line; do
     record_type="${line:0:6}"
     if [ "$record_type" != "SEQRES" ]; then
-        break
+      break
     fi
 
     chain_id="${line:11:1}"
@@ -140,7 +140,7 @@ from_atom() {
   if [ "$record_type" != "ATOM  " ]; then
     exit 1
   fi
-  
+
   res_name="${line:17:3}"
   chain_id="${line:21:1}"
   res_seq="${line:22:4}"
@@ -156,10 +156,10 @@ from_atom() {
     record_type="${line:0:6}"
 
     if [ "$record_type" != "ATOM  " -a \
-         "$record_type" != "HETATM" -a \
-         "$record_type" != "TER   " -a \
-         "$record_type" != "ANISOU" ]; then
-        break
+      "$record_type" != "HETATM" -a \
+      "$record_type" != "TER   " -a \
+      "$record_type" != "ANISOU" ]; then
+      break
     fi
     if [ "$record_type" != "ATOM  " ]; then
       continue
@@ -176,7 +176,7 @@ from_atom() {
       header="${id_prefix}${chain_id}"
       seq=""
     fi
-    
+
     if [ -z "$current_res_seq" -o "$current_res_seq" != "$res_seq" ]; then
       current_res_seq="$res_seq"
       seq+=$(map_res_names "$res_name")
