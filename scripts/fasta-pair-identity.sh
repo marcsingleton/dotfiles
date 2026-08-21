@@ -101,19 +101,20 @@ for ((i = 0; i < $maxlen; i++)); do
   fi
 
   # Calculate metadata
+  # This section uses x=$((x + 1)) over in-place ((x++)) to not trip set -e
   if [ "$sym1" != "" -a "$sym2" != "" ] \
     && ! is_gap "$sym1" \
     && ! is_gap "$sym2"; then
-    ((naln++)) # "" checks prevent empty syms when lengths are mismatched
+    naln=$((naln + 1)) # "" checks prevent empty syms when lengths are mismatched
     if [ "$sym1" = "$sym2" ]; then
-      ((nident++))
+      nident=$((nident + 1))
     fi
   fi
   if is_gap "$sym1"; then
-    ((ngap1++))
+    ngap1=$((ngap1 + 1))
   fi
   if is_gap "$sym2"; then
-    ((ngap2++))
+    ngap2=$((ngap2 + 1))
   fi
 done
 header="ident_data len1=${#seq1} len2=${#seq2} ngap1=$ngap1 ngap2=$ngap2 naln=$naln nident=$nident"
