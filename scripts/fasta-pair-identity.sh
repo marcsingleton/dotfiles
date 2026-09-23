@@ -65,18 +65,18 @@ else
   exit 1
 fi
 
-# Awk FASTA parsing command with the specified output delimiter
-SEP=$'\31' # Use unit separator control character to avoid collisions
+# Awk FASTA parsing command
+sep=$'\31' # Use unit separator control character to avoid collisions
 program='
 BEGIN {RS=">"; FS="\n"; ORS="\n"; OFS=""}
 NR==1 {next}
-{$1=$1 SEP; print}
+{$1=$1 sep; print}
 '
 
 # Parse records
-exec 3< <(awk -v SEP="$SEP" "$program" "$input_file") # Open on fd 3
-IFS="$SEP" read -u 3 header1 seq1
-IFS="$SEP" read -u 3 header2 seq2
+exec 3< <(awk -v sep="$sep" "$program" "$input_file") # Open on fd 3
+IFS="$sep" read -u 3 header1 seq1
+IFS="$sep" read -u 3 header2 seq2
 exec 3>&- # Close fd 3
 
 # Make identity string and calculate metadata
