@@ -33,6 +33,7 @@ else
   exit 1
 fi
 
+# Parse FASTQ
 program='
 BEGIN {COUNT=0}
 length($0) > 0 {
