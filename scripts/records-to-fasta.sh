@@ -50,6 +50,12 @@ else
   exit 1
 fi
 
+if [ "$width" -lt 1 ]; then
+  printf "%s: width is less than 1.\n" "${0##*/}" > /dev/stderr
+  exit 1
+fi
+
+# Parse records
 exec 3< "$input_file"
 while IFS="$sep" read -u 3 header seq; do
   print_fasta_record "$header" "$seq" "$width"

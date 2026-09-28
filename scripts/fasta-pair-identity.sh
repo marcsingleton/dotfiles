@@ -65,6 +65,11 @@ else
   exit 1
 fi
 
+if [ "$width" -lt 1 ]; then
+  printf "%s: width is less than 1.\n" "${0##*/}" > /dev/stderr
+  exit 1
+fi
+
 # Awk FASTA parsing command
 sep=$'\31' # Use unit separator control character to avoid collisions
 program='

@@ -224,11 +224,17 @@ if [ $# -eq 1 ]; then
 else
   input_file="/dev/stdin" # Read from STDIN if no file is provided
 fi
+
 if [ "$mode" != "seqres" -a "$mode" != "atom" ]; then
   printf "%s: Mode is not seqres or atom.\n" "${0##*/}"
   exit 1
 fi
+if [ "$width" -lt 1 ]; then
+  printf "%s: width is less than 1.\n" "${0##*/}" > /dev/stderr
+  exit 1
+fi
 
+# Parse PDB
 case "$mode" in
   seqres)
     from_seqres "$input_file" "$id_prefix" "$width"
