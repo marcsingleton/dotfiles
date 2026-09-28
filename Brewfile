@@ -2,7 +2,9 @@
 brew "bash"
 # Extremely fast Python linter, written in Rust
 brew "ruff"
-# Autoformat shell script source code
+# Shell linter 
+brew "shellcheck"
+# Shell formatter
 brew "shfmt"
 # Terminal multiplexer
 brew "tmux"
