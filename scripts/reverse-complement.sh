@@ -15,7 +15,10 @@ print_usage() {
 
 reverse_complement() {
   local seq="$1"
+  local type="$2"
 
+  local forward=""
+  local reverse=""
   case "$type" in
     dna)
       forward="Aa"
@@ -59,17 +62,5 @@ if [ $# -ne 1 ]; then
   exit 1
 fi
 
-case "$type" in
-  dna)
-    forward="Aa"
-    reverse="Tt"
-    ;;
-  rna)
-    forward="Aa"
-    reverse="Uu"
-    ;;
-esac
-forward+="TtUuGgCc"
-reverse+="AaAaCcGg"
-
-reverse_complement "$1"
+# Reverse complement
+reverse_complement "$1" "$type"
