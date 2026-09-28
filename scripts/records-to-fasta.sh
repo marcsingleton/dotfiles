@@ -14,7 +14,7 @@ print_fasta_record() {
   local width="$3"
 
   printf ">%s\n" "$header"
-  for ((i = 0; i < ${#seq}; i += $width)); do
+  for ((i = 0; i < ${#seq}; i += width)); do
     printf "%s\n" "${seq:i:$width}"
   done
 }

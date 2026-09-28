@@ -41,7 +41,7 @@ print_fasta_record() {
   local width="$3"
 
   printf ">%s\n" "$header"
-  for ((i = 0; i < ${#seq}; i += $width)); do
+  for ((i = 0; i < ${#seq}; i += width)); do
     printf "%s\n" "${seq:$i:$width}"
   done
 }
@@ -216,7 +216,7 @@ while getopts "m:p:w:eh" opt; do
       ;;
   esac
 done
-shift $(($OPTIND - 1)) # Shift to get the file argument
+shift $((OPTIND - 1)) # Shift to get the file argument
 
 # Validate args
 if [ $# -eq 1 ]; then

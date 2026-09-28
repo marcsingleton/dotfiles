@@ -154,8 +154,8 @@ lpad=$((lpad + max_id_len))
 idx=0
 while [ $idx -lt $max_seq_len ]; do
   if [ $idx -gt 0 ]; then
-    printf "%-*s\n" $((lpad + width))
-    for ((i = 0; i < $bpad; i++)); do
+    printf "%-*s\n" $((lpad + width)) " "
+    for ((i = 0; i < bpad; i++)); do
       printf "\n"
     done
   fi

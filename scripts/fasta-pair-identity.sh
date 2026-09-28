@@ -23,7 +23,7 @@ print_fasta_record() {
   local width="$3"
 
   printf ">%s\n" "$header"
-  for ((i = 0; i < ${#seq}; i += $width)); do
+  for ((i = 0; i < ${#seq}; i += width)); do
     printf "%s\n" "${seq:$i:$width}"
   done
 }
@@ -95,7 +95,7 @@ ngap1=0
 ngap2=0
 naln=0
 nident=0
-for ((i = 0; i < $maxlen; i++)); do
+for ((i = 0; i < maxlen; i++)); do
   sym1=${seq1:$i:1}
   sym2=${seq2:$i:1}
   # Make string

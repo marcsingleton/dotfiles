@@ -86,4 +86,4 @@ if [ $# -ne 1 ]; then
 fi
 
 # Translate
-translate $1
+translate "$1"
