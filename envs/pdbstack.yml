@@ -1,9 +1,12 @@
 name: pdbstack
 dependencies:
   - biotite
+  - jupyterlab
   - matplotlib
   - numpy
   - pandas
   - pdbfixer
   - pdb-tools
+  - plotly
+  - py3dmol
   - pymol-open-source

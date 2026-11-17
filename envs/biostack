@@ -1,0 +1,10 @@
+name: biostack
+dependencies:
+  - jupyterlab
+  - mafft
+  - matplotlib
+  - numpy
+  - pandas
+  - plotly
+  - scikit-bio
+  - scipy

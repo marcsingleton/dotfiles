@@ -6,4 +6,6 @@ dependencies:
   - pandas
   - plotly
   - python
+  - seaborn
+  - scikit-learn
   - scipy
