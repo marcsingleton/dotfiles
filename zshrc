@@ -14,6 +14,11 @@ backward-kill-path () {
 zle -N backward-kill-path
 bindkey '^[w' backward-kill-path
 
+# clip
+clip () {
+    nc localhost $CLIP_PORT
+}
+
 # errors
 # Necessary for some distros that meddle with the default
 if [ ${functions[command_not_found_handler]} ]; then
