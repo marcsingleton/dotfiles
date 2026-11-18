@@ -50,6 +50,9 @@ export HISTSIZE=2000
 alias tar='tar --no-xattrs'  # Prevents inclusion of xattr headers which throws warnings on other systems
 export COPYFILE_DISABLE=1  # Prevents creation of ._ members in archive which store MacOS specific information
 
+# tmux
+alias tmux-split-here="tmux split-window -c '#{pane_current_path}'"
+
 # slurm
 export SACCT_FORMAT='jobid,jobname,user,account,partition,state,exitcode,start,end,elapsed'
 export SQUEUE_FORMAT='%.18i %.10P %.15j %.8u %.8T %.11M %.11l %.11S %.6D %R'
